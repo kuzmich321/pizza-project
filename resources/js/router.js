@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ExampleComponent from "./components/ExampleComponent";
+import CardComponent from "./components/CardComponent";
+import PizzasComponent from "./components/PizzasComponent";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
     routes: [
-        { path: '/', component: ExampleComponent }
+        { path: '/', component: PizzasComponent },
+        { path: '/card', component: CardComponent },
     ],
     mode: 'history'
 })

@@ -11,6 +11,6 @@ Route::namespace('Api')->group(function () {
         Route::get('me', 'AuthController@me')->middleware('jwt.auth');
     });
 
-    Route::apiResource('/pizzas', 'PizzaController')->only(['index', 'show']);
+    Route::get('/pizzas', 'PizzaController');
     Route::apiResource('/card', 'CardController')->only(['index', 'show']);
 });

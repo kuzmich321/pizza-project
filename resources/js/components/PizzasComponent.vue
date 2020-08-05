@@ -9,7 +9,7 @@
                         <h4>{{ pizza.name }}</h4>
                         <h5 class="text-primary">{{ pizza.price }} $</h5>
                         <p class="card-text text-muted">{{ pizza.description }}</p>
-                        <a class="btn btn-primary" href="#">Add to card</a>
+                        <button class="btn btn-primary" v-on:click="addPizza(pizza.id)">Add to card</button>
                     </div>
                 </div>
             </div>
@@ -25,12 +25,24 @@
             }
         },
         methods: {
-            fetch(params = {}) {
-                axios.get('/api/pizzas')
+            fetch() {
+                axios.get('/pizzas')
                     .then(({data: {data}}) => {
                         this.pizzas = data
                     })
                     .catch(err => console.log(err))
+            },
+            addPizza(id) {
+                let card = [];
+                if (this.$cookies.get('card')) {
+                    card = JSON.parse(this.$cookies.get('card'));
+                    this.$cookies.remove('card');
+                    card.push(id);
+                    this.$cookies.set('card', JSON.stringify(card), '1d');
+                } else {
+                    card.push(id);
+                    this.$cookies.set('card', JSON.stringify(card), '1d');
+                }
             }
         },
         mounted() {

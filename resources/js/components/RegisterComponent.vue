@@ -35,7 +35,7 @@
                 this.registerAction(this.form).then(() => {
                     this.$router.push('/')
                 }).catch((e) => {
-                    console.log(e)
+                    console.log(e.response.data.errors)
                 })
             }
         }

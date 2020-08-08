@@ -15,7 +15,7 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($request->only('email', 'password'))) {
             return response()->json([
                 'message' => 'Wrong email or password. Try again.'
-            ], Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return response()->json(compact('token'), Response::HTTP_OK);

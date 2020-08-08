@@ -13,4 +13,6 @@ Route::namespace('Api')->group(function () {
 
     Route::get('/pizzas', 'PizzaController');
     Route::apiResource('/card', 'CardController')->only(['index', 'show']);
+    Route::apiResource('/orders', 'OrderController')->except('index');
+    Route::apiResource('/order_items', 'OrderItemController')->except(['index', 'show']);
 });

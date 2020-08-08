@@ -60,9 +60,7 @@ export default {
         },
 
         register({ dispatch }, credentials) {
-            axios.post('/auth/register', credentials).then(() => {
-                dispatch('login', credentials)
-            })
+            return axios.post('/auth/register', credentials)
         }
     }
 }

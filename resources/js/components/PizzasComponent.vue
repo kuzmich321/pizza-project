@@ -9,7 +9,7 @@
                         <h4>{{ pizza.name }}</h4>
                         <h5 class="text-primary">{{ pizza.price }} $</h5>
                         <p class="card-text text-muted">{{ pizza.description }}</p>
-                        <button class="btn btn-primary" v-on:click="addPizza(pizza.id)">Add to card</button>
+                        <button class="btn btn-primary" v-on:click="addToCard(pizza)">Add to card</button>
                     </div>
                 </div>
             </div>
@@ -18,32 +18,31 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex';
+
     export default {
         data() {
-            return {
-                pizzas: []
-            }
+            return {}
+        },
+        computed: {
+            ...mapGetters({
+                pizzas: 'pizza/pizzas',
+                card: 'card/card'
+            })
         },
         methods: {
+            ...mapActions({
+                fetchAction: 'pizza/fetch',
+                addToCardAction: 'card/addToCard'
+            }),
+
             fetch() {
-                axios.get('/pizzas')
-                    .then(({data: {data}}) => {
-                        this.pizzas = data
-                    })
-                    .catch(err => console.log(err))
+                this.fetchAction()
             },
-            addPizza(id) {
-                let card = [];
-                if (this.$cookies.get('card')) {
-                    card = JSON.parse(this.$cookies.get('card'));
-                    this.$cookies.remove('card');
-                    card.push(id);
-                    this.$cookies.set('card', JSON.stringify(card), '1d');
-                } else {
-                    card.push(id);
-                    this.$cookies.set('card', JSON.stringify(card), '1d');
-                }
-            }
+
+            addToCard(pizza) {
+                this.addToCardAction(pizza)
+            },
         },
         mounted() {
             this.fetch();

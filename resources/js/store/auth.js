@@ -3,7 +3,8 @@ export default {
 
     state: {
         token: null,
-        user: null
+        user: null,
+        guest: null
     },
 
     getters: {
@@ -11,29 +12,37 @@ export default {
             return state.token && state.user
         },
 
-        user (state) {
+        user(state) {
             return state.user
+        },
+
+        guest(state) {
+            return state.guest
         }
     },
 
     mutations: {
-        SET_TOKEN (state, token) {
+        SET_TOKEN(state, token) {
             state.token = token
         },
 
-        SET_USER (state, data) {
+        SET_USER(state, data) {
             state.user = data
+        },
+
+        SET_GUEST(state, data) {
+            state.guest = data
         }
     },
 
     actions: {
-        async login({ dispatch }, credentials) {
+        async login({dispatch}, credentials) {
             let response = await axios.post('/auth/login', credentials)
 
             return dispatch('attempt', response.data.token)
         },
 
-        async attempt({ commit, state }, token) {
+        async attempt({commit, state}, token) {
             if (token) {
                 commit('SET_TOKEN', token)
             }
@@ -52,15 +61,21 @@ export default {
             }
         },
 
-        logout({ commit }) {
+        logout({commit}) {
             return axios.post('/auth/logout').then(() => {
                 commit('SET_TOKEN', null)
                 commit('SET_USER', null)
             })
         },
 
-        register({ dispatch }, credentials) {
+        register({dispatch, commit}, credentials) {
             return axios.post('/auth/register', credentials)
+        },
+
+        guest({commit}, email) {
+            return axios.post('/auth/guest', {email: email})
+                .then(res => commit('SET_GUEST', res.data))
+                .catch(err => console.log(err.response.data))
         }
     }
 }

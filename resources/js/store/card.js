@@ -13,7 +13,7 @@ export default {
 
         totalPrice(state) {
             return state.totalPrice
-        }
+        },
     },
 
     mutations: {
@@ -28,11 +28,15 @@ export default {
 
         SET_CARD(state, pizzas) {
             state.card = pizzas
+        },
+
+        CLEAR_CARD(state) {
+            state.card = []
         }
     },
 
     actions: {
-        addToCard({ commit }, pizza) {
+        addToCard({commit}, pizza) {
             const userCard = JSON.parse(localStorage.getItem('card'));
 
             pizza.quantity = 1
@@ -56,7 +60,7 @@ export default {
             }
         },
 
-        removeFromCard({ commit }, pizza) {
+        removeFromCard({commit}, pizza) {
             let userCard = JSON.parse(localStorage.getItem('card'))
 
             if (userCard) {
@@ -68,16 +72,23 @@ export default {
             commit('REMOVE_FROM_CARD', pizza)
         },
 
-        getFromLocalStorage({ commit }) {
+        getFromLocalStorage({commit}) {
             const pizzas = JSON.parse(localStorage.getItem('card'));
 
             if (pizzas) {
                 let totalPrice = 0;
 
-                pizzas.forEach(pizza => totalPrice+= pizza.orderPrice)
+                pizzas.forEach(pizza => totalPrice += pizza.orderPrice)
 
                 commit('SET_CARD', pizzas)
                 commit('SET_TOTAL_PRICE', totalPrice)
+            }
+        },
+
+        clearCard({commit}) {
+            if (localStorage.getItem('card')) {
+                localStorage.removeItem('card')
+                commit('CLEAR_CARD')
             }
         }
     }

@@ -5,6 +5,7 @@ import CardComponent from "../components/CardComponent";
 import PizzasComponent from "../components/PizzasComponent";
 import LoginComponent from "../components/LoginComponent";
 import RegisterComponent from "../components/RegisterComponent";
+import HistoryComponent from "../components/HistoryComponent";
 
 Vue.use(VueRouter);
 
@@ -23,18 +24,17 @@ export default new VueRouter({
         {
             name: 'register',
             path: '/register',
-            component: RegisterComponent,
-            meta: {
-                auth: false
-            }
+            component: RegisterComponent
         },
         {
             name: 'login',
             path: '/login',
-            component: LoginComponent,
-            meta: {
-                auth: false
-            }
+            component: LoginComponent
+        },
+        {
+            name: 'history',
+            path: '/history',
+            component: HistoryComponent
         }
     ],
     mode: 'history'

@@ -32,6 +32,9 @@
                     <li class="nav-item">
                         <router-link :to="{ name: 'card' }" class="nav-link">My Card</router-link>
                     </li>
+                    <li class="nav-item" v-if="authenticated">
+                        <router-link :to="{ name: 'history' }" class="nav-link">History</router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -57,7 +60,7 @@
 
             logout() {
                 this.logoutAction().then(() => {
-                   this.$router.push('/').catch(() => {});
+                   this.$router.go(0).catch(() => {});
                 });
             }
         }

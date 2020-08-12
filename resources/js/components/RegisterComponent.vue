@@ -1,5 +1,13 @@
 <template>
     <div class="container">
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="errors !== null">
+            <p v-for="error in errors">{{error}}</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <form autocomplete="off" @submit.prevent="register" method="post">
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -22,8 +30,9 @@
             return {
                 form: {
                     email: '',
-                    password: '',
-                }
+                    password: ''
+                },
+                errors: null
             };
         },
         methods: {
@@ -35,7 +44,7 @@
                 this.registerAction(this.form).then(() => {
                     this.$router.push('/')
                 }).catch((e) => {
-                    console.log(e.response.data.errors)
+                    this.errors = e.response.data.errors
                 })
             }
         }

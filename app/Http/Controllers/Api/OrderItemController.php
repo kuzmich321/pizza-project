@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\OrderItem;
+use Illuminate\Support\Facades\Validator;
 
 class OrderItemController extends Controller
 {
@@ -27,17 +28,19 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'order_id' => 'required|integer',
-            'pizza_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'price' => 'required|integer'
-        ]);
+        $validatedData = Validator::make($request->all(), [
+            'data.*.order_id' => 'required|integer',
+            'data.*.pizza_id' => 'required|integer',
+            'data.*.quantity' => 'required|integer',
+            'data.*.price' => 'required|integer'
+        ])->validated();
 
-        OrderItem::create($validatedData);
+        foreach ($validatedData['data'] as $orderItemValidation) {
+            OrderItem::create($orderItemValidation);
+        }
 
         return response()->json([
-            'status' => 'Order item has been created'
+            'status' => 'Order items have been created'
         ], Response::HTTP_OK);
     }
 

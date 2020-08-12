@@ -39,10 +39,11 @@ class OrderController extends Controller
 
         $validatedData['status'] = Order::STATUS_ID_CREATED;
 
-        Order::create($validatedData);
+        $order = Order::create($validatedData);
 
         return response()->json([
             'status' => 'Order has been created',
+            'id' => $order->id
         ], Response::HTTP_OK);
     }
 
@@ -93,7 +94,22 @@ class OrderController extends Controller
         $order->delete();
 
         return response()->json([
-           'status' => 'Order has been deleted'
+            'status' => 'Order has been deleted'
         ], Response::HTTP_OK);
+    }
+
+    public function history(Request $request)
+    {
+        $id = $request->user()->id;
+
+        $orders = Order::where('user_id', $id)
+            ->latest()
+            ->limit(5)
+            ->with('orderItems.pizza')
+            ->get()->toArray();
+
+
+
+        return response()->json(compact('orders'));
     }
 }

@@ -12,4 +12,9 @@ class OrderItem extends Model
     {
         return $this->belongsTo('App\Order', 'id');
     }
+
+    public function pizza()
+    {
+        return $this->hasOne('App\Pizza', 'id', 'pizza_id');
+    }
 }

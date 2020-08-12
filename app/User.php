@@ -11,13 +11,16 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    const ID_TYPE_USER = 1;
+    const ID_TYPE_GUEST = 2;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'email', 'name', 'surname', 'password',
+        'email', 'name', 'surname', 'password', 'role'
     ];
 
     /**
@@ -45,11 +48,6 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function profile()
-    {
-        return $this->hasOne('App\Profile', 'id');
     }
 
     public function orders()

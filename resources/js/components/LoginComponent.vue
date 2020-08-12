@@ -1,8 +1,5 @@
 <template>
     <div class="container">
-        <div class="alert alert-danger" v-if="form.error">
-            <p>There was an error, unable to sign in with those credentials.</p>
-        </div>
         <form autocomplete="off" @submit.prevent="login" method="POST">
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -27,8 +24,7 @@
                 form: {
                     email: null,
                     password: null
-                },
-                error: false
+                }
             }
         },
         methods: {
@@ -40,8 +36,8 @@
                 this.signIn(this.form).then(() => {
                     this.$router.replace({
                         name: 'home'
-                    }).catch(() => {
-                        console.log('failed')
+                    }).catch((err) => {
+                        console.log(err)
                     })
                 })
             }

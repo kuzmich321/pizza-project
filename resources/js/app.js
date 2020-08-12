@@ -7,7 +7,7 @@ import store from './store/index';
 require('./bootstrap');
 require('./store/subscriber')
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'https://pizza-project123.herokuapp.com/api';
 
 Vue.use(VueCookies);
 

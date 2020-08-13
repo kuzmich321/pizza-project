@@ -5,7 +5,7 @@
                 <div class="row mb-5 justify-content-center">
                     <div class="col-8 d-flex justify-content-around">
                         <div v-for="item in order.order_items">
-                            <img class="pizza card-img mb-3" :src="`/storage/images/pizza-${item.pizza.id}.svg`">
+                            <img class="pizza card-img mb-3" :src="`${item.pizza.image}`">
                             <p class="text-secondary text-center">{{item.pizza.name}}</p>
                             <p class="text-secondary text-center">Quantity - {{item.quantity}}</p>
                         </div>

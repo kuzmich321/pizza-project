@@ -17,7 +17,7 @@
 
                 <tr v-for="pizza in pizzas">
                         <th scope="row">
-                            <img class="pizza card-img" :src="`/storage/images/pizza-${pizza.id}.svg`">
+                            <img class="pizza card-img" :src="`${pizza.image}`">
                         </th>
                         <td class="text-center align-middle"><h4>{{ pizza.name }}</h4></td>
                         <td class="text-center align-middle">{{ pizza.quantity }}</td>

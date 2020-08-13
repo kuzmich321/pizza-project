@@ -13,9 +13,9 @@ class PizzaController extends Controller
     {
         $pizzas = Pizza::all();
 
-        foreach ($pizzas as $pizza) {
-            $pizza->image = Storage::disk('s3')->url("pizzas/pizza-{$pizza->id}.svg");;
-        }
+        $pizzas->each(function ($pizza) {
+           $pizza->image = Storage::disk('s3')->url("pizzas/pizza-{$pizza->id}.svg");
+        });
 
         return new PizzaCollection($pizzas);
     }

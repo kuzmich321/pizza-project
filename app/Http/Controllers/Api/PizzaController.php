@@ -12,6 +12,10 @@ class PizzaController extends Controller
     {
         $pizzas = Pizza::all();
 
+        foreach ($pizzas as $pizza) {
+            $pizza->image = "https://laravel-blog-1337.s3.eu-north-1.amazonaws.com/pizzas/pizza-{$pizza->id}.svg";
+        }
+
         return new PizzaCollection($pizzas);
     }
 }

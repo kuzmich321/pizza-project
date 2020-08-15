@@ -83,7 +83,7 @@
                                 </div>
 
                             </div>
-                            <button type="submit" class="btn btn-primary" @click.prevent="createOrder(form)">Make order</button>
+                            <button type="submit" class="btn btn-primary" @click="createOrder(form)">Make order</button>
                         </form>
                     </div>
                 </div>

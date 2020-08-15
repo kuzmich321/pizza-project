@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <button class="btn btn-secondary float-right mb-4" @click.prevent="isDollars = !isDollars" v-if="pizzas.length > 0">Change Currency</button>
+        <button class="btn btn-secondary float-right mb-4" @click.prevent="isDollars = !isDollars" v-if="form.pizzas.length > 0">Change Currency</button>
 
-        <template v-if="pizzas.length > 0">
+        <template v-if="form.pizzas.length > 0">
             <table class="table table-hover mb-5">
                 <thead>
                 <tr>
@@ -15,16 +15,19 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="pizza in pizzas">
+                <tr v-for="pizza in form.pizzas">
                         <th scope="row">
                             <img class="pizza card-img" :src="`${pizza.image}`">
                         </th>
                         <td class="text-center align-middle"><h4>{{ pizza.name }}</h4></td>
-                        <td class="text-center align-middle">{{ pizza.quantity }}</td>
+                        <td class="text-center align-middle">
+                            <input type="number" id="quantity" name="quantity"
+                                   min="1" max="10" v-model="pizza.quantity" @click="prepareOrder(pizza)">
+                        </td>
                         <td class="text-center align-middle" v-if="isDollars">{{ pizza.orderPrice }} $</td>
                         <td class="text-center align-middle" v-else>{{ Math.ceil(pizza.orderPrice * 0.85) }} €</td>
                         <td class="text-center align-middle">
-                            <a href="" class="btn btn-danger" @click.prevent="removeFromCard(pizza)">Delete</a>
+                            <a href="" class="btn btn-danger" @click="removeFromCard(pizza)">Delete</a>
                         </td>
                 </tr>
                 </tbody>
@@ -32,8 +35,8 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <h4 class="text-secondary text-right">Total Price:
-                        <span class="text-primary" v-if="isDollars">{{totalPrice}} $</span>
-                        <span class="text-primary" v-else>{{Math.ceil(totalPrice * 0.85)}} €</span>
+                        <span class="text-primary" v-if="isDollars">{{form.total}} $</span>
+                        <span class="text-primary" v-else>{{Math.ceil(form.total * 0.85)}} €</span>
                     </h4>
                 </div>
             </div>
@@ -102,22 +105,24 @@
                     city: null,
                     street: null,
                     house: null,
-                    apartment: null
+                    apartment: null,
+                    total: 0,
+                    pizzas: [],
                 },
                 isDollars: true
             }
         },
         computed: {
             ...mapGetters({
-                pizzas: 'card/card',
+                card: 'card/card',
                 totalPrice: 'card/totalPrice',
                 auth: 'auth/authenticated'
-            })
+            }),
         },
         methods: {
             ...mapActions({
                 removeFromCardAction: 'card/removeFromCard',
-                getFromLocalStorageAction: 'card/getFromLocalStorage',
+                getFromLocalStorage: 'card/getFromLocalStorage',
                 createOrderAction: 'order/createOrder'
             }),
 
@@ -125,16 +130,28 @@
                 this.removeFromCardAction(pizza)
             },
 
-            getFromLocalStorage() {
-                this.getFromLocalStorageAction()
-            },
-
             createOrder(fields) {
                 this.createOrderAction(fields)
+            },
+
+            setLocalPizzas() {
+                this.form.pizzas = this.card
+            },
+
+            prepareOrder(pizza) {
+                pizza.orderPrice = pizza.price * pizza.quantity
+                this.form.total = 0
+                this.form.pizzas.forEach(pizza => this.form.total += pizza.orderPrice)
+            },
+
+            setLocalTotalPrice() {
+                this.form.total = this.totalPrice
             }
         },
         mounted() {
             this.getFromLocalStorage()
+            this.setLocalPizzas()
+            this.setLocalTotalPrice()
         },
     }
 </script>

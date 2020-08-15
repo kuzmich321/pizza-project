@@ -61,10 +61,6 @@ export default {
         },
 
         async createOrder({commit, dispatch, state, rootGetters}, fields) {
-            const pizzas = rootGetters['card/card']
-
-            fields.total = rootGetters['card/totalPrice']
-
             fields.user_id = await dispatch('getCurrentUserId', fields.email)
 
             await axios.post('/orders', fields).then(response => {
@@ -74,11 +70,11 @@ export default {
                 commit('SET_MESSAGE', response.data.status)
 
                 dispatch('card/clearCard')
-            }).catch(err => console.log(err.response.data)).then(() => {
+            }).catch(err => console.log(err.response.data.errors)).then(() => {
                 const orderId = state.order.id
 
                 let orderItems = {
-                    'data': pizzas.map(pizza => {
+                    'data': fields.pizzas.map(pizza => {
                         return {
                             order_id: orderId,
                             pizza_id: pizza.id,
@@ -90,9 +86,9 @@ export default {
 
                 dispatch('createOrderItems', orderItems)
                     .then(() => console.log('Everything is ok'))
-                    .catch(err => commit('SET_ERRORS', err.response.data.errors))
+                    .catch(err => commit('SET_ERRORS', err.response))
 
-            }).catch(err => commit('SET_ERRORS', err.response.data.errors))
+            }).catch(err => commit('SET_ERRORS', err.response))
         },
 
         createOrderItems(_, items) {

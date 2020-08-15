@@ -131,7 +131,7 @@
             },
 
             createOrder(fields) {
-                this.createOrderAction(fields)
+                this.createOrderAction(fields).then(() => this.form.pizzas = [])
             },
 
             setLocalPizzas() {

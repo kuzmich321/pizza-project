@@ -25,32 +25,6 @@
             @yield('content')
         </main>
     </div>
-    <!-- GETSALE CODE START -->
-    <script type="text/javascript">
-        (function(d, w, c) {
-            w[c] = {
-                eventListener: function(e) {
-                    if (e.eventType == 'init') {
-                        //getSale is initialized, getSale object is accessible
-                        console.log(123)
-                    }
-                },
-                projectId: 6815
-            };
-
-            var n = d.getElementsByTagName("script")[0],
-                s = d.createElement("script"),
-                f = function () { n.parentNode.insertBefore(s, n); };
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = "//rt.getsale.io/loader.js";
-
-            if (w.opera == "[object Opera]") {
-                d.addEventListener("DOMContentLoaded", f, false);
-            } else { f(); }
-
-        })(document, window, "getSaleInit");
-    </script>
     <!-- GETSALE CODE END -->
 </body>
 </html>

@@ -29,6 +29,12 @@
     <script type="text/javascript">
         (function(d, w, c) {
             w[c] = {
+                eventListener: function(e) {
+                    if (e.eventType == 'init') {
+                        //getSale is initialized, getSale object is accessible
+                        console.log(123)
+                    }
+                },
                 projectId: 6815
             };
 

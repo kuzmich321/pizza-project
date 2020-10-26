@@ -19,9 +19,13 @@ export default {
 
     actions: {
         async fetch({ commit }) {
-            await axios.get('/pizzas').then(({data: {data :data}}) => {
-                commit('SET_PIZZAS', data)
-            }).catch(err => console.log(err));
+            try {
+                let response = await axios.get('/pizzas')
+
+                commit('SET_PIZZAS', response.data.data)
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 }

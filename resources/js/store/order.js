@@ -63,32 +63,16 @@ export default {
         async createOrder({commit, dispatch, state, rootGetters}, fields) {
             fields.user_id = await dispatch('getCurrentUserId', fields.email)
 
-            await axios.post('/orders', fields).then(response => {
+            try {
+                let response = await axios.post('/orders', fields)
+
                 fields.id = response.data.id
 
                 commit('SET_ORDER', fields)
                 commit('SET_MESSAGE', response.data.status)
-
-                dispatch('card/clearCard')
-            }).catch(err => console.log(err.response.data.errors)).then(() => {
-                const orderId = state.order.id
-
-                let orderItems = {
-                    'data': fields.pizzas.map(pizza => {
-                        return {
-                            order_id: orderId,
-                            pizza_id: pizza.id,
-                            quantity: pizza.quantity,
-                            price: pizza.orderPrice
-                        }
-                    })
-                }
-
-                dispatch('createOrderItems', orderItems)
-                    .then(() => console.log('Everything is ok'))
-                    .catch(err => commit('SET_ERRORS', err.response))
-
-            }).catch(err => commit('SET_ERRORS', err.response))
+            } catch (err) {
+                console.log(err.response.data.errors)
+            }
         },
 
         createOrderItems(_, items) {
@@ -105,6 +89,7 @@ export default {
         getHistory({commit}) {
             axios.get('/orders/history')
                 .then(res => commit('SET_HISTORY', res.data.orders))
+                .catch(err => console.log(err))
         }
     },
 

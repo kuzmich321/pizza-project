@@ -39,20 +39,14 @@ export default {
         addToCard({commit}, pizza) {
             const userCard = JSON.parse(localStorage.getItem('card'));
 
-            pizza.quantity = 1
-            pizza.orderPrice = pizza.price
+            pizza = {...pizza, quantity: 1, orderPrice: pizza.price}
 
             if (userCard) {
                 localStorage.removeItem('card')
 
                 let found = userCard.find(product => product.id === pizza.id)
-
-                if (found) {
-                    found.quantity++
-                    found.orderPrice = found.quantity * found.price
-                } else {
-                    userCard.push(pizza)
-                }
+                found ? found = {...found, quantity: found.quantity + 1, orderPrice: found.quantity * found.price}
+                    : userCard.push(pizza)
 
                 localStorage.setItem('card', JSON.stringify(userCard))
             } else {
